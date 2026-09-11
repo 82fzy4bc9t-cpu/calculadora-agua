@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de agua</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .contenedor {
+      background: white;
+      width: min(90%, 420px);
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #bbb;
+    }
+
+    button {
+      margin-top: 22px;
+      border: none;
+      background: #222;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    #resultado {
+      margin-top: 22px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f1f1f1;
+      display: none;
+    }
+
+    .advertencia {
+      margin-top: 12px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="contenedor">
+    <h1>💧 Calculadora de agua</h1>
+
+    <label for="temperatura">Temperatura (°C):</label>
+    <input type="number" id="temperatura" step="0.01" placeholder="Ej. 25">
+
+    <label for="actividad">¿Actividad física?</label>
+    <select id="actividad">
+      <option value="0">No</option>
+      <option value="1">Sí</option>
+    </select>
+
+    <button onclick="calcular()">CALCULAR</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      const temperatura = parseFloat(document.getElementById("temperatura").value);
+      const actividad = parseInt(document.getElementById("actividad").value);
+
+      if (isNaN(temperatura)) {
+        alert("Ingresa una temperatura.");
+        return;
+      }
+
+      let agua_recomendada;
+
+      if (temperatura < 20) {
+        agua_recomendada = 1.5;
+      } else if (temperatura >= 20 && temperatura < 30) {
+        agua_recomendada = 2.0;
+      } else {
+        agua_recomendada = 2.5;
+      }
+
+      if (actividad === 1) {
+        agua_recomendada += 0.5;
+      }
+
+      let mensaje = "";
+
+      if (temperatura < 0 || temperatura >= 40) {
+        mensaje = '<div class="advertencia">⚠️ Temperatura extrema, tome precaución!</div>';
+      }
+
+      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").innerHTML =
+        "<strong>Resultados:</strong><br><br>" +
+        "Temperatura: " + temperatura.toFixed(2) + " °C<br>" +
+        "Actividad física: " + (actividad === 1 ? "Sí" : "No") + "<br>" +
+        "Agua recomendada: " + agua_recomendada.toFixed(2) + " L" +
+        mensaje;
+    }
+  </script>
+</body>
+</html>
